@@ -10,6 +10,7 @@ import org.java_websocket.drafts.Draft;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
+import gr.eap.RLGameEcoClient.comm.LoginCommand;
 
 
 public class Client extends WebSocketClient {
@@ -54,6 +55,11 @@ public class Client extends WebSocketClient {
 
 	@Override
 	public void onOpen( ServerHandshake handshake ) {
+		LoginCommand lc = new LoginCommand();
+		lc.setSocket(getConnection());
+		lc.setUserName("player2");
+		lc.setPassword("pass2");
+		lc.send();
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class LoginCommand extends Command {
 	}
 
 	public LoginCommand(){
-		this.setType("gr.eap.RLGameEcoClient.comm.LoginCommand");
+		this.setType("gr.eap.RLGameEcoServer.comm.LoginCommand");
 	}
 	
 

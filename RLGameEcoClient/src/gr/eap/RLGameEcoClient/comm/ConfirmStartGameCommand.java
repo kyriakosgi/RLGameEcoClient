@@ -16,7 +16,7 @@ public class ConfirmStartGameCommand extends Command {
 	}
 	
 	public ConfirmStartGameCommand(){
-		this.setType("gr.eap.RLGameEcoClient.comm.ConfirmStartGameCommand");
+		this.setType("gr.eap.RLGameEcoServer.comm.ConfirmStartGameCommand");
 	}
 
 

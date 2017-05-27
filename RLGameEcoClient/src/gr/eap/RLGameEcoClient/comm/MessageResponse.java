@@ -12,7 +12,7 @@ public class MessageResponse extends Response {
 	}
 
 	public MessageResponse() {
-		this.setType("gr.eap.RLGameEcoClient.comm.MessageResponse");
+		this.setType("gr.eap.RLGameEcoServer.comm.MessageResponse");
 	}
 
 	@Override

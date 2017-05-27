@@ -10,12 +10,12 @@ public class GamesListResponse extends Response {
 
 	public GamesListResponse() {
 		gamesList = GamesRegister.getInstance().getGamesList();
-		this.setType("gr.eap.RLGameEcoClient.comm.GamesListResponse");
+		this.setType("gr.eap.RLGameEcoServer.comm.GamesListResponse");
 	}
 
 	public GamesListResponse(ArrayList<Game> gamesList) {
 		this.gamesList = gamesList;
-		this.setType("gr.eap.RLGameEcoClient.comm.GamesListResponse");
+		this.setType("gr.eap.RLGameEcoServer.comm.GamesListResponse");
 	}
 	
 	public ArrayList<Game> getGamesList() {

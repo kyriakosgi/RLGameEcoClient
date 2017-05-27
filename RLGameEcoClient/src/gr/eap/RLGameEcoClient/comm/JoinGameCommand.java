@@ -26,7 +26,7 @@ public class JoinGameCommand extends Command {
 	}
 
 	public JoinGameCommand(){
-		this.setType("gr.eap.RLGameEcoClient.comm.JoinGameCommand");
+		this.setType("gr.eap.RLGameEcoServer.comm.JoinGameCommand");
 	}
 
 

@@ -45,7 +45,7 @@ public class CreateGameCommand extends Command {
 
 
 	public CreateGameCommand(){
-		this.setType("gr.eap.RLGameEcoClient.comm.CreateGameCommand");
+		this.setType("gr.eap.RLGameEcoServer.comm.CreateGameCommand");
 	}
 	
 	

@@ -19,7 +19,7 @@ public class GameStateResponse extends Response {
 	public GameStateResponse(GameState state, UUID gameUid) {
 		this.state = state;
 		this.gameUid = gameUid;
-		this.setType("gr.eap.RLGameEcoClient.comm.GameStateResponse");
+		this.setType("gr.eap.RLGameEcoServer.comm.GameStateResponse");
 	}
 
 	@Override

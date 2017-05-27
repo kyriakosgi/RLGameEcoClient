@@ -15,7 +15,7 @@ public class LeaveGameCommand extends Command {
 //	}
 	
 	public LeaveGameCommand(){
-		this.setType("gr.eap.RLGameEcoClient.comm.LeaveGameCommand");
+		this.setType("gr.eap.RLGameEcoServer.comm.LeaveGameCommand");
 	}
 
 

@@ -8,7 +8,7 @@ public class MessageCommand extends Command {
 	private ArrayList<Integer> recipientsIds = new ArrayList<Integer>();
 
 	public MessageCommand(){
-		this.setType("gr.eap.RLGameEcoClient.comm.MessageCommand");
+		this.setType("gr.eap.RLGameEcoServer.comm.MessageCommand");
 	}
 	public String getMessageText() {
 		return messageText;
