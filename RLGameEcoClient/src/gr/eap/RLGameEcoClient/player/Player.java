@@ -15,6 +15,7 @@ public abstract class Player {
 	private int score;
 	private int id;
 	private String name;
+	private boolean isHuman;
 
 	public int getId() {
 		return id;
@@ -66,6 +67,13 @@ public abstract class Player {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+	
+	public boolean isHuman() {
+		return isHuman;
+	}
+	public void setHuman(boolean isHuman) {
+		this.isHuman = isHuman;
 	}
 
 //	public static Player getPlayer(int id) {
