@@ -17,7 +17,7 @@ public class CommObjectClassCreator {
 		else if (commObjectType.equals("gr.eap.RLGameEcoServer.comm.MoveCommand"))
 			return MoveCommand.class;
 		else if (commObjectType.equals("gr.eap.RLGameEcoServer.comm.MessageResponse"))
-			return Response.class;
+			return MessageResponse.class;
 		else if (commObjectType.equals("gr.eap.RLGameEcoServer.comm.PlayersListResponse"))
 			return PlayersListResponse.class;
 		else if (commObjectType.equals("gr.eap.RLGameEcoServer.comm.GamesListResponse"))
