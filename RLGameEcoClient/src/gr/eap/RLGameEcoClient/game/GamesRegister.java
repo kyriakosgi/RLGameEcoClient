@@ -6,11 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 
-import gr.eap.RLGameEcoClient.comm.ConnectionState;
-import gr.eap.RLGameEcoClient.comm.GamesListResponse;
-import gr.eap.RLGameEcoClient.player.Participant;
 import gr.eap.RLGameEcoClient.player.Player;
-import gr.eap.RLGameEcoClient.player.PlayersRegister;
 
 public class GamesRegister {
 	private static GamesRegister __me;
@@ -37,40 +33,17 @@ public class GamesRegister {
 		return games.get(gameUid);
 	}
 	
-	public void createGame(Player player1, int boardSize, int baseSize, int numberOfPawns) {
-		Game newGame = new Game(boardSize, baseSize, numberOfPawns);
-		newGame.addPlayer(player1, Participant.Role.WHITEPLAYER);
-		newGame.setStatus(GameStatus.WAITING_FOR_PLAYERS);
-		games.put(newGame.getUid(), newGame);
-	}
-
-	public void removeGame(Game game){
-		games.remove(game.getUid());
-		sendGamesList();
-	}
 	
 	public ArrayList<Game> getGamesList() {
 		return new ArrayList<Game>(games.values());
 	}
 
-	public void sendGamesList() {
-		PlayersRegister.getInstance().getPlayers().forEach((k, v) -> {
-			GamesListResponse r;
-			if (v.getConnectionState() != ConnectionState.IN_GAME) {
-				r = new GamesListResponse();
-			}
-			else // in game players are sent their game only
-			{
-				ArrayList<Game> singleGameList = new ArrayList<Game>();
-				Game playersGame = GamesRegister.getInstance().searchGameByPlayer(v);
-				if (playersGame != null) singleGameList.add(playersGame);
-				r = new GamesListResponse(singleGameList);
-			}
-			r.setSocket(v.getConnection());
-			r.setConnectionState(v.getConnectionState());
-			r.setUserId(k);
-			r.send();
-		});
+	public void setGamesList(ArrayList<Game> gamesList){
+		games.clear();
+		for (Game game : gamesList){
+			games.put(game.getUid(), game);
+			game.fillParticipants();
+		}
 	}
 	
 	public Game searchGameByPlayer(Player player){
