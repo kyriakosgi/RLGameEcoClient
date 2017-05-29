@@ -14,6 +14,7 @@ public abstract class Response extends CommunicationsObject {
 		this.commandID = commandID;
 	}
 
+
 // getAvailableCommands() - not yet implemented
 //	public ArrayList<String> getAvailableCommands() {
 //		return availableCommands;
