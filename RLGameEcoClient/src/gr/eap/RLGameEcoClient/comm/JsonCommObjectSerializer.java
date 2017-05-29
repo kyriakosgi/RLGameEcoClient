@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import gr.eap.RLGameEcoClient.player.Player;
+
 //The general format of a serialized command is the Json serialized Command Object with the addition of the property "className" holding the Command type name
 public class JsonCommObjectSerializer implements CommObjectSerializer {
 	private static final String COMMAND_TYPE_PROPERTY = "type";
@@ -20,7 +22,9 @@ public class JsonCommObjectSerializer implements CommObjectSerializer {
 
 	@Override
 	public CommunicationsObject deserialize(String serializedCommand) {
-		Gson gson = new Gson();
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(Player.class, new PlayerDeserializer());
+		Gson gson = gsonBuilder.create();
 		JsonParser parser = new JsonParser();
 		JsonElement tree = parser.parse(serializedCommand);
 		JsonObject jobject = tree.getAsJsonObject();
