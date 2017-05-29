@@ -1,7 +1,6 @@
 package gr.eap.RLGameEcoClient.game;
 
 import org.rlgame.gameplay.Pawn;
-import org.rlgame.gameplay.Settings;
 import org.rlgame.gameplay.Square;
 
 import gr.eap.RLGameEcoClient.player.Player;
@@ -29,32 +28,32 @@ public class Move {
 		return player;
 	}
 
-	public void perform(){
-		//Find gameState
-		Game game = GamesRegister.getInstance().searchGameByPlayer(getPlayer());
-		if (!(game.getStatus().equals(GameStatus.IN_PROGRESS))) return;
-		pawn.movePawn(pawn.getPosition(), toSquare);
-		//Refresh gameState
-		game.getState().refreshGameState();
-		
-		if (game.getState().isFinal()){
-			String msgText = "Game ended. ";
-			if (game.getState().getTurn() == Settings.WHITE_PLAYER)
-			{
-				msgText += "White Player";
-			}
-			else
-			{
-				msgText += "Black Player";
-			}
-			msgText += " wins!";
-			game.endGame(msgText);
-		}
-		else
-		{
-			game.getState().setNextTurn();
-		}
-	}
+//	public void perform(){
+//		//Find gameState
+//		Game game = GamesRegister.getInstance().searchGameByPlayer(getPlayer());
+//		if (!(game.getStatus().equals(GameStatus.IN_PROGRESS))) return;
+//		pawn.movePawn(pawn.getPosition(), toSquare);
+//		//Refresh gameState
+//		game.getState().refreshGameState();
+//		
+//		if (game.getState().isFinal()){
+//			String msgText = "Game ended. ";
+//			if (game.getState().getTurn() == Settings.WHITE_PLAYER)
+//			{
+//				msgText += "White Player";
+//			}
+//			else
+//			{
+//				msgText += "Black Player";
+//			}
+//			msgText += " wins!";
+//			game.endGame(msgText);
+//		}
+//		else
+//		{
+//			game.getState().setNextTurn();
+//		}
+//	}
 	
 	public Boolean isLegit(){
 		return getPawn().isMoveLegit(getToSquare());
