@@ -1,13 +1,9 @@
 package gr.eap.RLGameEcoClient.player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import gr.eap.RLGameEcoClient.comm.ConnectionState;
-import gr.eap.RLGameEcoClient.game.GamesRegister;
 import gr.eap.RLGameEcoClient.game.Move;
 
 public class Participant {
@@ -29,6 +25,10 @@ public class Participant {
 
 	public void setTeamLeader(Player teamLeader) {
 		this.teamLeader = teamLeader;
+	}
+
+	public ArrayList<Move> getPendingMoves() {
+		return pendingMoves;
 	}
 
 	public Participant() {
@@ -101,51 +101,51 @@ public class Participant {
 		this.role = role;
 	}
 
-	public Boolean addMove(Move move){
-		if (!(move.isLegit())) return false;
-		for (Move mv : pendingMoves){
-			if (!hasPlayer(mv.getPlayer()) || mv.getPlayer().equals(move.getPlayer())) return false;
-		}
-		pendingMoves.add(move);
-		if (pendingMoves.size() == getPlayers().size()) performMove();
-		return true;
-	}
-	
-	
-	private void performMove() {
-		Map<Move, Integer> moveStats = new HashMap<Move, Integer>();
-		Move leaderMove = null;
-		for (Move mv : pendingMoves){
-			if (mv.getPlayer().equals(teamLeader)) leaderMove = mv;
-			if(moveStats.containsKey(mv)){
-				moveStats.replace(mv, moveStats.get(mv) + 1);
-			}
-			else {
-				moveStats.put(mv, 1);
-			}
-		}
-		int maxValue = 0;
-		for (Integer val : moveStats.values()){
-			if (val > maxValue) maxValue = val;
-		}
-		int count = 0;
-		for (Integer val : moveStats.values()){
-			if (val.equals(maxValue)) count++;
-		}
-		if (count == 1){
-			for (Entry<Move,Integer> e: moveStats.entrySet()){
-				if (e.getValue().equals(maxValue)){
-					e.getKey().perform();
-				}
-			}
-		}
-		else {
-			leaderMove.perform();
-		}
-//		GamesRegister.getInstance().searchGameByPlayer(teamLeader).getState().setNextTurn();
-		GamesRegister.getInstance().searchGameByPlayer(teamLeader).shareState();
-		pendingMoves.clear();
-	}
+//	public Boolean addMove(Move move){
+//		if (!(move.isLegit())) return false;
+//		for (Move mv : pendingMoves){
+//			if (!hasPlayer(mv.getPlayer()) || mv.getPlayer().equals(move.getPlayer())) return false;
+//		}
+//		pendingMoves.add(move);
+//		if (pendingMoves.size() == getPlayers().size()) performMove();
+//		return true;
+//	}
+//	
+//	
+//	private void performMove() {
+//		Map<Move, Integer> moveStats = new HashMap<Move, Integer>();
+//		Move leaderMove = null;
+//		for (Move mv : pendingMoves){
+//			if (mv.getPlayer().equals(teamLeader)) leaderMove = mv;
+//			if(moveStats.containsKey(mv)){
+//				moveStats.replace(mv, moveStats.get(mv) + 1);
+//			}
+//			else {
+//				moveStats.put(mv, 1);
+//			}
+//		}
+//		int maxValue = 0;
+//		for (Integer val : moveStats.values()){
+//			if (val > maxValue) maxValue = val;
+//		}
+//		int count = 0;
+//		for (Integer val : moveStats.values()){
+//			if (val.equals(maxValue)) count++;
+//		}
+//		if (count == 1){
+//			for (Entry<Move,Integer> e: moveStats.entrySet()){
+//				if (e.getValue().equals(maxValue)){
+//					e.getKey().perform();
+//				}
+//			}
+//		}
+//		else {
+//			leaderMove.perform();
+//		}
+////		GamesRegister.getInstance().searchGameByPlayer(teamLeader).getState().setNextTurn();
+//		GamesRegister.getInstance().searchGameByPlayer(teamLeader).shareState();
+//		pendingMoves.clear();
+//	}
 
 	@Override
 	public boolean equals(Object object) {
