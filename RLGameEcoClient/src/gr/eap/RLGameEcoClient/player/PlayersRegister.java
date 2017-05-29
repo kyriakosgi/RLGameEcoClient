@@ -41,6 +41,15 @@ public class PlayersRegister {
 //		}
 //		return returnPlayer;
 //	}
+
+	public void setPLayersList(ArrayList<Player> playersList){
+		players.clear();
+		for (Player player : playersList){
+			players.put(player.getId(), player);
+		}
+	}
+
+
 	
 	public ArrayList<Player> getPlayersById(ArrayList<Integer> ids){
 		ArrayList<Player> returnList = new ArrayList<Player>();
