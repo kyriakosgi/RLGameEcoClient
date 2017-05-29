@@ -11,10 +11,14 @@ import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
 import gr.eap.RLGameEcoClient.comm.LoginCommand;
+import gr.eap.RLGameEcoClient.comm.Response;
+import gr.eap.RLGameEcoClient.player.Player;
+import gr.eap.RLGameEcoClient.comm.JsonCommObjectSerializer;
 
 
 public class Client extends WebSocketClient {
 
+	public static Player me;
 	public Client(URI uri){
 		super(uri);
 	}
@@ -39,7 +43,23 @@ public class Client extends WebSocketClient {
 
 	@Override
 	public void onMessage( String message ) {
-		System.out.println(message);;
+		try {
+
+			System.out.println(message);
+			JsonCommObjectSerializer js = new JsonCommObjectSerializer();
+			Response cmd = (Response) js.deserialize(message);
+			if (cmd != null) {
+				cmd.setSocket(getConnection());
+				cmd.process();
+
+			} else {
+				System.err.println("Unknown command received\r\n" + message);
+			}
+		} catch (
+
+		Exception ex) {
+			System.err.println("onMessage:" + ex);
+		}
 	}
 
 	@Override
