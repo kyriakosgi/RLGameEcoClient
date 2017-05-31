@@ -3,15 +3,14 @@ package gr.eap.RLGameEcoClient.game;
 import org.rlgame.gameplay.Pawn;
 import org.rlgame.gameplay.Square;
 
-import gr.eap.RLGameEcoClient.player.Player;
 
 public class Move {
 	private Pawn pawn;
 	private Square toSquare;
-	private Player player;
+//	private Player player;
 	
-	public Move(Player player, Pawn pawn, Square toSquare){
-		this.player = player;
+	public Move(Pawn pawn, Square toSquare){
+		//this.player = player;
 		this.pawn = pawn;
 		this.toSquare = toSquare;
 	}
@@ -24,9 +23,9 @@ public class Move {
 		return toSquare;
 	}
 	
-	public Player getPlayer() {
-		return player;
-	}
+//	public Player getPlayer() {
+//		return player;
+//	}
 
 //	public void perform(){
 //		//Find gameState
