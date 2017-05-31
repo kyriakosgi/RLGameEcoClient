@@ -9,6 +9,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
+import org.rlgame.gameplay.IPlayer;
 
 import gr.eap.RLGameEcoClient.comm.LoginCommand;
 import gr.eap.RLGameEcoClient.comm.Response;
@@ -19,6 +20,7 @@ import gr.eap.RLGameEcoClient.comm.JsonCommObjectSerializer;
 public class Client extends WebSocketClient {
 
 	public static Player me;
+	public static IPlayer machine;
 	public Client(URI uri){
 		super(uri);
 	}
