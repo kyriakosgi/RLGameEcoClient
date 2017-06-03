@@ -4,6 +4,9 @@ import java.util.Random;
 import java.util.Vector;
 
 import org.rlgame.gameplay.Settings;
+
+import gr.eap.RLGameEcoClient.game.Move;
+
 import org.rlgame.common.*;
 
 public class RandomPlayer implements IPlayer  {
@@ -34,9 +37,9 @@ public class RandomPlayer implements IPlayer  {
 	public StringBuffer getMovesLog() {
 		return movesLog;
 	}
-
-	// Random Mode
-	public void pickMove(GameState passedGameState) {
+	
+	@Override
+	public Move returnPickedMove(GameState passedGameState) {
 		Vector<ObservationCandidateMove> movesVector = passedGameState.getAllPossibleMovesForPlayer(this.turn, passedGameState.getGameBoard());
 		
 		int movesNum = movesVector.size();
@@ -45,8 +48,17 @@ public class RandomPlayer implements IPlayer  {
 		
 		Pawn chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[selMove.getPawnId()];
 		Square tagetSquare = (Square) passedGameState.getGameBoard()[selMove.getTargetCoordX()][selMove.getTargetCoordY()];
+
+		return new Move(chosenPawn, tagetSquare);
+	}
+	
+
+	// Random Mode
+	public void pickMove(GameState passedGameState) {
 		
-		this.playSelectedMove(chosenPawn, tagetSquare, passedGameState);		
+		Move pickedMove = returnPickedMove(passedGameState);
+		
+		this.playSelectedMove(pickedMove.getPawn(), pickedMove.getToSquare(), passedGameState);		
 		
 		
 
@@ -82,5 +94,6 @@ public class RandomPlayer implements IPlayer  {
 		movesLog.append(s);
 		movesLog.append("\n");
 	}
+
 
 }
