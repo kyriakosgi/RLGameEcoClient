@@ -3,6 +3,10 @@ package gr.eap.RLGameEcoClient.comm;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.rlgame.gameplay.RandomPlayer;
+import org.rlgame.gameplay.Settings;
+
+import gr.eap.RLGameEcoClient.Client;
 import gr.eap.RLGameEcoClient.player.Player;
 
 public class MessageResponse extends Response {
@@ -59,6 +63,7 @@ public class MessageResponse extends Response {
 		}
 		
 		if (boardSize != 0 && baseSize != 0 && numberOfPawns != 0){
+			Client.machine = new RandomPlayer(Settings.WHITE_PLAYER);
 			//Create Game
 			CreateGameCommand createGameCommand = new CreateGameCommand();
 			createGameCommand.setBaseSize(baseSize);
