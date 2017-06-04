@@ -246,14 +246,14 @@ public class GameState  {
 				cloneWhite[i] = new Pawn(i, true, boardSize, baseSize);
 			} else {
 				Square whitePawnPosition = new Square(whitePawns[i].position.getXCoord(), whitePawns[i].position.getYCoord(), whitePawns[i].position.isFree(), boardSize, baseSize);  
-				cloneWhite[i] = new Pawn(i, true, whitePawnPosition, whitePawns[i].isAlive());
+				cloneWhite[i] = new Pawn(i, true, whitePawnPosition, whitePawns[i].isAlive(), boardSize, baseSize);
 			}
 
 			if (blackPawns[i].position.isInBlackBase() && blackPawns[i].isAlive()) {
 				cloneBlack[i] = new Pawn(i, false, boardSize, baseSize);
 			} else {
 				Square blackPawnPosition = new Square(blackPawns[i].position.getXCoord(), blackPawns[i].position.getYCoord(), blackPawns[i].position.isFree(), boardSize, baseSize);  
-				cloneBlack[i] = new Pawn(i, false, blackPawnPosition, blackPawns[i].isAlive());
+				cloneBlack[i] = new Pawn(i, false, blackPawnPosition, blackPawns[i].isAlive(), boardSize, baseSize);
 			}
 		}
 		
@@ -624,14 +624,14 @@ public class GameState  {
 				toRet.whitePawns[i] = new Pawn(i, true, boardSize, baseSize);
 			} else {
 				Square whitePawnPosition = new Square(this.whitePawns[i].position.getXCoord(), this.whitePawns[i].position.getYCoord(), this.whitePawns[i].position.isFree(), boardSize, baseSize);  
-				toRet.whitePawns[i] = new Pawn(i, true, whitePawnPosition, this.whitePawns[i].isAlive());
+				toRet.whitePawns[i] = new Pawn(i, true, whitePawnPosition, this.whitePawns[i].isAlive(), boardSize, baseSize);
 			}
 			
 			if (this.blackPawns[i].position.isInBlackBase() && this.blackPawns[i].isAlive()) {
 				toRet.blackPawns[i] = new Pawn(i, false, boardSize, baseSize);
 			} else {
 				Square blackPawnPosition = new Square(this.blackPawns[i].position.getXCoord(), this.blackPawns[i].position.getYCoord(), this.blackPawns[i].position.isFree(), boardSize, baseSize);  
-				toRet.blackPawns[i] = new Pawn(i, false, blackPawnPosition, this.blackPawns[i].isAlive());
+				toRet.blackPawns[i] = new Pawn(i, false, blackPawnPosition, this.blackPawns[i].isAlive(), boardSize, baseSize);
 			}
 			
 		}
