@@ -18,9 +18,9 @@ public class MoveCommand extends Command {
 		return gameUid;
 	}
 
-//	private void setGameUid(UUID gameUid) {
-//		this.gameUid = gameUid;
-//	}
+	public void setGameUid(UUID gameUid) {
+		this.gameUid = gameUid;
+	}
 	
 
 	
