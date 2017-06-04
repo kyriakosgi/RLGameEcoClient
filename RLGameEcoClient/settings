@@ -1,0 +1,7 @@
+#Application Settings
+#Sun Jun 06 00:22:39 EET 2017
+Debug=false
+ServerURI=ws://localhost:33313
+userName=player2
+password=pass2
+playerType=RANDOM_PLAYER

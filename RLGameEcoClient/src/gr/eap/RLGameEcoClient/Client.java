@@ -1,8 +1,13 @@
 package gr.eap.RLGameEcoClient;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
+import java.util.Properties;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
@@ -24,6 +29,7 @@ public class Client extends WebSocketClient {
 	public static byte currentBoardSize;
 	public static byte currentBaseSize;
 	public static byte currentNumberOfPawns;
+	public static Properties clientSettings;
 	public Client(URI uri){
 		super(uri);
 	}
@@ -35,7 +41,20 @@ public class Client extends WebSocketClient {
 	 */
 	public static void main( String[] args ) {
 		try {
-			Client c = new Client(new URI("ws://localhost:33313"));
+			clientSettings = new Properties();
+			try (Reader reader = new FileReader(System.getProperty("user.dir") + System.getProperty("file.separator") + "settings")) {
+				clientSettings.load(reader);
+			} catch (FileNotFoundException e) {
+				// TODO Log
+				System.err.println(e.getMessage());
+				return;
+			} catch (IOException e) {
+				// TODO Log
+				System.err.println(e.getMessage());
+				return;
+			}
+			
+			Client c = new Client(new URI(clientSettings.getProperty("ServerURI")));
 			
 			c.connect();
 			
@@ -82,8 +101,8 @@ public class Client extends WebSocketClient {
 	public void onOpen( ServerHandshake handshake ) {
 		LoginCommand lc = new LoginCommand();
 		lc.setSocket(getConnection());
-		lc.setUserName("player2");
-		lc.setPassword("pass2");
+		lc.setUserName(clientSettings.getProperty("userName"));
+		lc.setPassword(clientSettings.getProperty("password"));
 		lc.send();
 	}
 
