@@ -21,6 +21,9 @@ public class Client extends WebSocketClient {
 
 	public static Player me;
 	public static IPlayer machine;
+	public static byte currentBoardSize;
+	public static byte currentBaseSize;
+	public static byte currentNumberOfPawns;
 	public Client(URI uri){
 		super(uri);
 	}

@@ -64,6 +64,9 @@ public class MessageResponse extends Response {
 		
 		if (boardSize != 0 && baseSize != 0 && numberOfPawns != 0){
 			Client.machine = new RandomPlayer(Settings.WHITE_PLAYER);
+			Client.currentBaseSize = baseSize;
+			Client.currentBoardSize = boardSize;
+			Client.currentNumberOfPawns = numberOfPawns;
 			//Create Game
 			CreateGameCommand createGameCommand = new CreateGameCommand();
 			createGameCommand.setBaseSize(baseSize);
