@@ -40,7 +40,10 @@ public class Pawn {
 		alive = true;
 	}
 
-	public Pawn(int noumero, boolean whiteColor, Square toSquare, boolean aliveStatus) {
+	public Pawn(int noumero, boolean whiteColor, Square toSquare, boolean aliveStatus, int boardSize, int baseSize) {
+		this.boardSize = boardSize;
+		this.baseSize = baseSize;
+		this.maxNumberOfPawnMoves = baseSize * 2;
 		id = noumero;
 		white = (whiteColor == true) ? true : false;
 		position = toSquare;
@@ -48,6 +51,25 @@ public class Pawn {
 		alive = aliveStatus;
 	}	
 	
+
+	public int getBoardSize() {
+		return boardSize;
+	}
+
+	public int getBaseSize() {
+		return baseSize;
+	}
+
+	
+	
+	public void setBoardSize(int boardSize) {
+		this.boardSize = boardSize;
+	}
+
+	public void setBaseSize(int baseSize) {
+		this.baseSize = baseSize;
+		this.maxNumberOfPawnMoves = baseSize * 2;
+	}
 
 	// move pawn from fromSquare to toSquare
 	public void movePawn(Square fromSquare, Square toSquare) {
