@@ -38,8 +38,10 @@ public class RandomPlayer implements IPlayer  {
 		return movesLog;
 	}
 	
-	@Override
-	public Move returnPickedMove(GameState passedGameState) {
+	
+
+	// Random Mode
+	public Move pickMove(GameState passedGameState) {
 		Vector<ObservationCandidateMove> movesVector = passedGameState.getAllPossibleMovesForPlayer(this.turn, passedGameState.getGameBoard());
 		
 		int movesNum = movesVector.size();
@@ -49,19 +51,13 @@ public class RandomPlayer implements IPlayer  {
 		Pawn chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[selMove.getPawnId()];
 		Square tagetSquare = (Square) passedGameState.getGameBoard()[selMove.getTargetCoordX()][selMove.getTargetCoordY()];
 
-		return new Move(chosenPawn, tagetSquare);
-	}
-	
-
-	// Random Mode
-	public void pickMove(GameState passedGameState) {
 		
-		Move pickedMove = returnPickedMove(passedGameState);
+		Move pickedMove = new Move(chosenPawn, tagetSquare);
 		
 		this.playSelectedMove(pickedMove.getPawn(), pickedMove.getToSquare(), passedGameState);		
 		
 		
-
+		return pickedMove;
 	}	
 	
 	private void playSelectedMove(Pawn chosenPawn, Square targetSquare, GameState passedGameState) {
