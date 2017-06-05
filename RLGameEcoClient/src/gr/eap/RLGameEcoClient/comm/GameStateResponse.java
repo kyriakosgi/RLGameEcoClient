@@ -39,7 +39,7 @@ public class GameStateResponse extends Response {
 		}
 		if (getState().getTurn() == Client.machine.getId()){
 			
-			Move pickedMove = Client.machine.returnPickedMove(getState());
+			Move pickedMove = Client.machine.pickMove(getState());
 			
 			MoveCommand mc = new MoveCommand();
 			mc.setSocket(getSocket());

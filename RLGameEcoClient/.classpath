@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="E:/Kyriakos/OneDrive/ΕΑΠ/Διπλωματική/Διπλωματική/Java Projects/libs/gson-2.8.0.jar"/>
 	<classpathentry kind="lib" path="E:/Kyriakos/OneDrive/ΕΑΠ/Διπλωματική/Διπλωματική/Java Projects/libs/TooTallNate-Java-WebSocket.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/RLLib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

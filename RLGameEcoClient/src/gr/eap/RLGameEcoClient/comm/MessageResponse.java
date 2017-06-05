@@ -3,6 +3,8 @@ package gr.eap.RLGameEcoClient.comm;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.rlgame.gameplay.MMPlayer;
+import org.rlgame.gameplay.RLPlayer;
 import org.rlgame.gameplay.RandomPlayer;
 import org.rlgame.gameplay.Settings;
 
@@ -67,6 +69,12 @@ public class MessageResponse extends Response {
 			switch (playerType) {
 			case "RANDOM_PLAYER":
 				Client.machine = new RandomPlayer(Settings.WHITE_PLAYER);
+				break;
+			case "MM_PLAYER":
+				Client.machine = new MMPlayer(Settings.WHITE_PLAYER, Settings.PLAYER_W_PLIES, Settings.BLACK_PLAYER, boardSize, baseSize, numberOfPawns);
+				break;
+			case "RL_PLAYER":
+				Client.machine = new RLPlayer(Settings.WHITE_PLAYER, boardSize, baseSize, numberOfPawns);
 				break;
 
 			default:
