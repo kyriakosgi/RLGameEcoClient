@@ -4,4 +4,4 @@ Debug=false
 ServerURI=ws://localhost:33313
 userName=player2
 password=pass2
-playerType=RANDOM_PLAYER
+playerType=RL_PLAYER

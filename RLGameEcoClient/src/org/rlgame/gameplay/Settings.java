@@ -51,8 +51,8 @@ public class Settings {
 
 	
 	//Parameters
-	public static double eGreedyWhite	= 0.9;
-	public static double eGreedyBlack 	= 0.9;
+	public static double eGreedyWhite	= 0.7;
+	public static double eGreedyBlack 	= 0.7;
 	public static double alpha 			= 0.001;
 	public static double lambda 		= 0.5;
 	
