@@ -37,19 +37,24 @@ public class GameStateResponse extends Response {
 				getState().getBlackPawns()[i].setBaseSize(Client.currentBaseSize);
 			}
 		}
-		if (getState().getTurn() == Client.machine.getId()){
-			
-			Move pickedMove = Client.machine.pickMove(getState());
-			
-			MoveCommand mc = new MoveCommand();
-			mc.setSocket(getSocket());
-			mc.setPawnId(pickedMove.getPawn().getId());
-			mc.setToXCoord(pickedMove.getToSquare().getXCoord());
-			mc.setToYCoord(pickedMove.getToSquare().getYCoord());
-			mc.setUserId(getUserId());
-			mc.setGameUid(getGameUid());
-			mc.send();
-			
+		if (getState().isFinal()){
+			Client.machine.finishGameSession();
+		}
+		else
+		{
+			if (getState().getTurn() == Client.machine.getId()){
+				
+				Move pickedMove = Client.machine.pickMove(getState());
+				
+				MoveCommand mc = new MoveCommand();
+				mc.setSocket(getSocket());
+				mc.setPawnId(pickedMove.getPawn().getId());
+				mc.setToXCoord(pickedMove.getToSquare().getXCoord());
+				mc.setToYCoord(pickedMove.getToSquare().getYCoord());
+				mc.setUserId(getUserId());
+				mc.setGameUid(getGameUid());
+				mc.send();
+			}	
 
 		}
 		
