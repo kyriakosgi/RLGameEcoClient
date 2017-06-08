@@ -40,19 +40,32 @@ public class RandomPlayer implements IPlayer  {
 	
 	
 
-	// Random Mode
 	public Move pickMove(GameState passedGameState) {
-		Vector<ObservationCandidateMove> movesVector = passedGameState.getAllPossibleMovesForPlayer(this.turn, passedGameState.getGameBoard());
-		
-		int movesNum = movesVector.size();
-		int ee = eRand.nextInt(movesNum);
-		ObservationCandidateMove selMove = movesVector.get(ee);
-		
-		Pawn chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[selMove.getPawnId()];
-		Square tagetSquare = (Square) passedGameState.getGameBoard()[selMove.getTargetCoordX()][selMove.getTargetCoordY()];
-
-		
-		Move pickedMove = new Move(chosenPawn, tagetSquare);
+		return pickMove(passedGameState, null);
+	}
+	
+	public Move pickMove(GameState passedGameState, Move forcedMove) {
+		Pawn chosenPawn;
+		Square tagetSquare;
+		Move pickedMove;
+		if (forcedMove == null){
+			
+			Vector<ObservationCandidateMove> movesVector = passedGameState.getAllPossibleMovesForPlayer(this.turn, passedGameState.getGameBoard());
+			
+			int movesNum = movesVector.size();
+			int ee = eRand.nextInt(movesNum);
+			ObservationCandidateMove selMove = movesVector.get(ee);
+			
+			chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[selMove.getPawnId()];
+			tagetSquare = (Square) passedGameState.getGameBoard()[selMove.getTargetCoordX()][selMove.getTargetCoordY()];
+	
+			
+			pickedMove = new Move(chosenPawn, tagetSquare);
+		}
+		else
+		{
+			pickedMove = forcedMove;
+		}
 		
 		this.playSelectedMove(pickedMove.getPawn(), pickedMove.getToSquare(), passedGameState);		
 		

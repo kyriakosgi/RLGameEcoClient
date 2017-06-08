@@ -71,19 +71,37 @@ public class RLPlayer implements IPlayer{
 		return movesLog;
 	}
 
-	// RL Mode
 	public Move pickMove(GameState passedGameState) {
+		return pickMove(passedGameState, null);
+	}
+	
+	public Move pickMove(GameState passedGameState, Move forcedMove) {
+		Pawn chosenPawn;
+		Square tagetSquare;
+		Move pickedMove;
+		boolean isExploitMode;
+		double maxValue;
+		if (forcedMove == null){
 
-		Vector<ObservationCandidateMove> movesVector = passedGameState.getAllPossibleMovesForPlayer(this.turn, passedGameState.getGameBoard());
-		
-		AgentAction moveResult = aiAgent.pickPlayerMove(movesVector); 
-		
-		Pawn chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[moveResult.getPawnId()];
-		Square tagetSquare = (Square) passedGameState.getGameBoard()[moveResult.getTargetCoordX()][moveResult.getTargetCoordY()];
-		
-		Move pickedMove = new Move(chosenPawn, tagetSquare);
-		
-		this.playSelectedMove(chosenPawn, tagetSquare, moveResult.isExploitMode(), moveResult.getMaxValue(), passedGameState);
+			Vector<ObservationCandidateMove> movesVector = passedGameState.getAllPossibleMovesForPlayer(this.turn, passedGameState.getGameBoard());
+			
+			AgentAction moveResult = aiAgent.pickPlayerMove(movesVector); 
+			
+			chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[moveResult.getPawnId()];
+			tagetSquare = (Square) passedGameState.getGameBoard()[moveResult.getTargetCoordX()][moveResult.getTargetCoordY()];
+			
+			pickedMove = new Move(chosenPawn, tagetSquare);
+			isExploitMode = moveResult.isExploitMode();
+			maxValue = moveResult.getMaxValue();
+		}
+		else
+		{
+			pickedMove = forcedMove;
+			isExploitMode = false;
+			maxValue = 0.0;
+			
+		}
+		this.playSelectedMove(pickedMove.getPawn(), pickedMove.getToSquare(), isExploitMode, maxValue, passedGameState);
 
 //		passedGameState.printGameBoard();
 		
@@ -91,7 +109,7 @@ public class RLPlayer implements IPlayer{
 		//however now we get the reward again (we should have searched the vector by coordinates in order to locate it)
 		double environmentReward = passedGameState.getReward(this.turn);
 		
-		aiAgent.applySelectedMoveReward(moveResult.isExploitMode(), passedGameState.getNetworkInput(), environmentReward, passedGameState.isFinal());	
+		aiAgent.applySelectedMoveReward(isExploitMode, passedGameState.getNetworkInput(), environmentReward, passedGameState.isFinal());	
 		
 		return pickedMove;
 	}	

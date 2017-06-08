@@ -90,98 +90,115 @@ public class MMPlayer implements IPlayer {
 	}
 	
 	public Move pickMove(GameState passedGameState) {
-	    int idx = -1;
-	    double maxValue = -1000;
-	    double value = maxValue;
-	    
-	    double alpha = Settings.LOSS;
-	    double beta = Settings.WIN;	
+		return pickMove(passedGameState, null);
+	}
+	
+	public Move pickMove(GameState passedGameState, Move forcedMove) {
+		Pawn chosenPawn;
+		Square tagetSquare;
+		Move pickedMove;
+		boolean exploreMove;
+		double maxValue;
+		if (forcedMove == null){
 		
-		
-		
-	    for (int i = 0; i < this.traversalDepth; i++){
-	    	positionsTable[i].clear();    
-	    }
-	    
-		//Before we locate the opponent possible moves clone the state
-		GameState miniMaxState =  passedGameState.deepCopy();
-
-		double eSoft = eSoftDecision.nextDouble();
-
-		//if eSoft is > = than eGreedyValue (default = 0.9) then we explore 
-		boolean exploreMove = (eSoft >=  eGreedyValue) ? true : false; 
-		Vector<ObservationCandidateMove> movesVector;
-		ObservationCandidateMove selMove;
-		
-		//all legal moves for player
-		movesVector = miniMaxState.getAllPossibleMovesForPlayer(this.turn, miniMaxState.getGameBoard());
-
-		if (exploreMove) {
-			int movesNum = movesVector.size();
-			int ee = eRand.nextInt(movesNum);
-			selMove = movesVector.get(ee);
+			int idx = -1;
+		    maxValue = -1000;
+		    double value = maxValue;
+		    
+		    double alpha = Settings.LOSS;
+		    double beta = Settings.WIN;	
 			
-			//MaxValue calc added on 29/7/2012 
-			double aux = aiAgent.checkAIResponse(selMove.getInputNode()) ;		
-			maxValue = aux + selMove.getEnvReward();
-		} else {	
-			boolean canPlayerWin;
-			Vector <Integer> maxValueMoves = new Vector <Integer> ();
-			canPlayerWin = miniMaxState.canWin(this.turn);
-			for (int i = 0; i < movesVector.size(); i++) {
-				ObservationCandidateMove moveRec = movesVector.get(i);
-				//if a non blank move 
-				if ((moveRec.getTargetCoordX() + moveRec.getTargetCoordY()) != 0) {
-					if (canPlayerWin) {
-						debugLog("Pick Move: " + i +" Pawn :" +String.valueOf(moveRec.getPawnId())+ " "+ String.valueOf(moveRec.getTargetCoordX()) + ","+ String.valueOf(moveRec.getTargetCoordY()) + " CAN_WIN");
-						value = maxMove(0, miniMaxState.deepCopy(), moveRec.getPawnId(), moveRec.getTargetCoordX(), moveRec.getTargetCoordY(), alpha, beta);
-					} else { 
-						debugLog("Pick Move: " + i +" Pawn :" +String.valueOf(moveRec.getPawnId())+ " "+ String.valueOf(moveRec.getTargetCoordX()) + ","+ String.valueOf(moveRec.getTargetCoordY()) );
-						value = maxMove(this.traversalDepth - 1, miniMaxState.deepCopy(), moveRec.getPawnId(), moveRec.getTargetCoordX(), moveRec.getTargetCoordY(), alpha, beta);
+			
+			
+		    for (int i = 0; i < this.traversalDepth; i++){
+		    	positionsTable[i].clear();    
+		    }
+		    
+			//Before we locate the opponent possible moves clone the state
+			GameState miniMaxState =  passedGameState.deepCopy();
+	
+			double eSoft = eSoftDecision.nextDouble();
+	
+			//if eSoft is > = than eGreedyValue (default = 0.9) then we explore 
+			exploreMove = (eSoft >=  eGreedyValue) ? true : false; 
+			Vector<ObservationCandidateMove> movesVector;
+			ObservationCandidateMove selMove;
+			
+			//all legal moves for player
+			movesVector = miniMaxState.getAllPossibleMovesForPlayer(this.turn, miniMaxState.getGameBoard());
+	
+			if (exploreMove) {
+				int movesNum = movesVector.size();
+				int ee = eRand.nextInt(movesNum);
+				selMove = movesVector.get(ee);
+				
+				//MaxValue calc added on 29/7/2012 
+				double aux = aiAgent.checkAIResponse(selMove.getInputNode()) ;		
+				maxValue = aux + selMove.getEnvReward();
+			} else {	
+				boolean canPlayerWin;
+				Vector <Integer> maxValueMoves = new Vector <Integer> ();
+				canPlayerWin = miniMaxState.canWin(this.turn);
+				for (int i = 0; i < movesVector.size(); i++) {
+					ObservationCandidateMove moveRec = movesVector.get(i);
+					//if a non blank move 
+					if ((moveRec.getTargetCoordX() + moveRec.getTargetCoordY()) != 0) {
+						if (canPlayerWin) {
+							debugLog("Pick Move: " + i +" Pawn :" +String.valueOf(moveRec.getPawnId())+ " "+ String.valueOf(moveRec.getTargetCoordX()) + ","+ String.valueOf(moveRec.getTargetCoordY()) + " CAN_WIN");
+							value = maxMove(0, miniMaxState.deepCopy(), moveRec.getPawnId(), moveRec.getTargetCoordX(), moveRec.getTargetCoordY(), alpha, beta);
+						} else { 
+							debugLog("Pick Move: " + i +" Pawn :" +String.valueOf(moveRec.getPawnId())+ " "+ String.valueOf(moveRec.getTargetCoordX()) + ","+ String.valueOf(moveRec.getTargetCoordY()) );
+							value = maxMove(this.traversalDepth - 1, miniMaxState.deepCopy(), moveRec.getPawnId(), moveRec.getTargetCoordX(), moveRec.getTargetCoordY(), alpha, beta);
+						}
+						debugLog("Pick Move Returned: " + value + " with max value " + maxValue);
+	
+						
+						//changed on 15/9/2012
+	//					if (value > maxValue) { //if it is the biggest value, keep it
+	//						maxValue = value;
+	//						idx = i;
+	//			        }
+						
+						if (value > maxValue) { 
+							maxValue = value;
+							maxValueMoves.clear();
+							maxValueMoves.add(i);
+	
+						} else if (value == maxValue) {	
+							maxValueMoves.add(i);
+						}					
 					}
-					debugLog("Pick Move Returned: " + value + " with max value " + maxValue);
-
-					
-					//changed on 15/9/2012
-//					if (value > maxValue) { //if it is the biggest value, keep it
-//						maxValue = value;
-//						idx = i;
-//			        }
-					
-					if (value > maxValue) { 
-						maxValue = value;
-						maxValueMoves.clear();
-						maxValueMoves.add(i);
-
-					} else if (value == maxValue) {	
-						maxValueMoves.add(i);
-					}					
+	
 				}
-
+				
+				//added on 15/9/2012
+				if (maxValueMoves.size() > 1 && (! chooseFirst)) {
+					int cc = eqEvalMovesDecision.nextInt(maxValueMoves.size());
+					idx = (Integer) maxValueMoves.get(cc);
+					debugLog("MMPlayer Pick Move : Picked Idx " + cc +" out of :" + (maxValueMoves.size() - 1) + " moves with evaluation : "+ maxValue );
+				} else {
+					idx =  (Integer) maxValueMoves.get(0);
+				}
+				
+				selMove = movesVector.get(idx);
+				debugLog("Choosen Move: " + selMove.getPawnId() + " " + selMove.getTargetCoordX() + ","+  selMove.getTargetCoordY()+" "+ " with max value " + maxValue);					
 			}
+			chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[selMove.getPawnId()];
+			tagetSquare = passedGameState.getSquareByCoordinates(selMove.getTargetCoordX(), selMove.getTargetCoordY());
+			pickedMove = new Move(chosenPawn, tagetSquare);
+		}
+		else
+		{
+			pickedMove = forcedMove;
+			exploreMove = true;
+			maxValue = 0.0;
 			
-			//added on 15/9/2012
-			if (maxValueMoves.size() > 1 && (! chooseFirst)) {
-				int cc = eqEvalMovesDecision.nextInt(maxValueMoves.size());
-				idx = (Integer) maxValueMoves.get(cc);
-				debugLog("MMPlayer Pick Move : Picked Idx " + cc +" out of :" + (maxValueMoves.size() - 1) + " moves with evaluation : "+ maxValue );
-			} else {
-				idx =  (Integer) maxValueMoves.get(0);
-			}
-			
-			selMove = movesVector.get(idx);
-			debugLog("Choosen Move: " + selMove.getPawnId() + " " + selMove.getTargetCoordX() + ","+  selMove.getTargetCoordY()+" "+ " with max value " + maxValue);					
 		}
 		
-		Pawn chosenPawn = (Pawn) passedGameState.getPlayerPawns(this.turn)[selMove.getPawnId()];
-		Square tagetSquare = passedGameState.getSquareByCoordinates(selMove.getTargetCoordX(), selMove.getTargetCoordY());
-
 		
-		
-		Move pickedMove = new Move(chosenPawn, tagetSquare);
 		
 		//The Neural network actions are similar to the best move / exploit mode actions, thus we set exploit mode to true
-		playSelectedMove(chosenPawn, tagetSquare, (! exploreMove), maxValue, passedGameState);
+		playSelectedMove(pickedMove.getPawn(), pickedMove.getToSquare(), (! exploreMove), maxValue, passedGameState);
 		 
 		////Note the environment reward is called from the actual State after the move has been played
 		////it isn't called from the miniMaxState that is the clone of the actual state that we use for the the minimax search

@@ -10,6 +10,8 @@ public interface  IPlayer {
 	public StringBuffer getMovesLog();
 
 	public Move pickMove(GameState passedGameState);
+	
+	public Move pickMove(GameState passedGameState, Move forcedMove);
 	public void finishGameSession();
 	public void addMoveLog(String s);
 
