@@ -1,5 +1,6 @@
 package gr.eap.RLGameEcoClient.comm;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +11,8 @@ import org.rlgame.gameplay.Settings;
 
 import gr.eap.RLGameEcoClient.Client;
 import gr.eap.RLGameEcoClient.player.Player;
+import gr.eap.RLGameEcoClient.player.Member;
+import gr.eap.RLGameEcoClient.player.Participant.Role;
 
 public class MessageResponse extends Response {
 	private Message message;
@@ -30,11 +33,12 @@ public class MessageResponse extends Response {
 	public void process() {
 		Player sender = getMessage().getSender();
 		String currentMessage = getMessage().getText();
-		String regex = "(?i)((?!not).)*create.*game.*board.*size.*?(\\d+).*base.*size.*?(\\d+).*?(\\d+).*pawns.*";
-		Matcher matchCreateGame = Pattern.compile(regex,Pattern.CASE_INSENSITIVE).matcher(currentMessage);
+		String regexCreateGame = "(?i)((?!not).)*create.*game.*board.*size.*?(\\d+).*base.*size.*?(\\d+).*?(\\d+).*pawns.*";
+		Matcher matchCreateGame = Pattern.compile(regexCreateGame,Pattern.CASE_INSENSITIVE).matcher(currentMessage);
 		String reply = "";
 		byte boardSize = 0, baseSize = 0, numberOfPawns = 0;
-		if (sender != null){
+		UUID joinGameUid = null;
+		if (sender != null && sender.isHuman() && ((Member)sender).getAvatar().equals(Client.me)){
 			
 			if (matchCreateGame.matches()){
 				try {
@@ -51,7 +55,16 @@ public class MessageResponse extends Response {
 				reply = "Not creating a game for now";
 			}
 			else{
-				reply = "OK";
+				String regexJoinGame = "join UID:(.+)";
+				Matcher matchJoinGame = Pattern.compile(regexJoinGame,Pattern.CASE_INSENSITIVE).matcher(currentMessage);
+				if (matchJoinGame.matches()){
+					joinGameUid = UUID.fromString(matchJoinGame.group(1));
+					reply = "Joining game...";
+				}
+				else
+				{
+					reply = "OK";
+				}
 			}
 
 			if (reply != ""){
@@ -61,6 +74,16 @@ public class MessageResponse extends Response {
 				replyCommand.setSocket(getSocket());
 				replyCommand.setUserId(getUserId());
 				replyCommand.send();
+			}
+			
+			if (joinGameUid != null){
+				JoinGameCommand joinCommand = new JoinGameCommand();
+				joinCommand.setGameUid(joinGameUid);
+				joinCommand.setRole(Role.BLACKPLAYER);
+				joinCommand.setId(0);
+				joinCommand.setSocket(getSocket());
+				joinCommand.setUserId(getUserId());
+				joinCommand.send();
 			}
 		}
 		
