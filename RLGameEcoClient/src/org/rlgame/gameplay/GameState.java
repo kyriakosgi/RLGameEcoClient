@@ -5,6 +5,8 @@ import java.util.Vector;
 import org.rlgame.common.*;
 import org.rlgame.gameplay.Settings;
 
+import gr.eap.RLGameEcoClient.game.Move;
+
 public class GameState  {
 
 	private int numberOfPawns;
@@ -89,6 +91,28 @@ public class GameState  {
 				gameBoard[i][j] = new Square(i, j, boardSize, baseSize);
 			}
 		}
+	}
+	
+	public Move findMoveFromLastState(GameState lastState){
+		Pawn[] lastPlayedPawnsCurrent;
+		Pawn[] lastPlayedPawnsLast;
+		if (getTurn() == Settings.WHITE_PLAYER){
+			
+			lastPlayedPawnsCurrent = blackPawns;
+			lastPlayedPawnsLast = lastState.blackPawns;
+		}
+		else
+		{
+			lastPlayedPawnsCurrent = whitePawns;
+			lastPlayedPawnsLast = lastState.whitePawns;
+		}
+		
+		for (int i = 0; i < numberOfPawns; i++){
+			if (!(lastPlayedPawnsCurrent[i].getPosition().equals(lastPlayedPawnsLast[i].getPosition()))){
+				return new Move(lastPlayedPawnsCurrent[i], lastPlayedPawnsCurrent[i].getPosition());
+			}
+		}
+		return null;
 	}
 	
 	public void synchronizeGameBoard() {
