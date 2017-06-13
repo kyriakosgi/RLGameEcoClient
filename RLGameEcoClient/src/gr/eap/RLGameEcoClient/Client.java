@@ -14,6 +14,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
+import org.rlgame.gameplay.GameState;
 import org.rlgame.gameplay.IPlayer;
 
 import gr.eap.RLGameEcoClient.comm.LoginCommand;
@@ -31,6 +32,7 @@ public class Client extends WebSocketClient {
 	public static byte currentNumberOfPawns;
 	public static Properties clientSettings;
 	public static gr.eap.RLGameEcoClient.player.Participant.Role joinRole;
+	public static GameState lastState; //Used only when spectating
 	public Client(URI uri){
 		super(uri);
 	}
