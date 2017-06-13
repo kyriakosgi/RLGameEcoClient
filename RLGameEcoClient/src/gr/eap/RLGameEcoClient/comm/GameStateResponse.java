@@ -6,6 +6,7 @@ import org.rlgame.gameplay.GameState;
 
 import gr.eap.RLGameEcoClient.Client;
 import gr.eap.RLGameEcoClient.game.Move;
+import gr.eap.RLGameEcoClient.player.Participant.Role;
 
 public class GameStateResponse extends Response {
 	private GameState state;
@@ -37,24 +38,35 @@ public class GameStateResponse extends Response {
 				getState().getBlackPawns()[i].setBaseSize(Client.currentBaseSize);
 			}
 		}
+		if (Client.joinRole != null && Client.joinRole == Role.SPECTATOR && Client.lastState == null) Client.lastState = getState(); 
 		if (getState().isFinal()){
 			Client.machine.finishGameSession();
 		}
 		else
 		{
 			if (getState().getTurn() == Client.machine.getId()){
-				
-				Move pickedMove = Client.machine.pickMove(getState());
-				
-				MoveCommand mc = new MoveCommand();
-				mc.setSocket(getSocket());
-				mc.setPawnId(pickedMove.getPawn().getId());
-				mc.setToXCoord(pickedMove.getToSquare().getXCoord());
-				mc.setToYCoord(pickedMove.getToSquare().getYCoord());
-				mc.setUserId(getUserId());
-				mc.setGameUid(getGameUid());
-				mc.send();
-			}	
+				if (Client.joinRole != Role.SPECTATOR){
+					
+					Move pickedMove = Client.machine.pickMove(getState());
+					
+					MoveCommand mc = new MoveCommand();
+					mc.setSocket(getSocket());
+					mc.setPawnId(pickedMove.getPawn().getId());
+					mc.setToXCoord(pickedMove.getToSquare().getXCoord());
+					mc.setToYCoord(pickedMove.getToSquare().getYCoord());
+					mc.setUserId(getUserId());
+					mc.setGameUid(getGameUid());
+					mc.send();
+				}
+				else
+				{
+					Client.lastState = getState();
+				}
+			}
+			else if (getState().getTurn() != Client.machine.getId() && (Client.joinRole == Role.SPECTATOR)){
+				Move observedMove = getState().findMoveFromLastState(Client.lastState);
+				Client.machine.pickMove(getState(), observedMove);
+			}
 
 		}
 		
