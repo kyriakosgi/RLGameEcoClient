@@ -30,6 +30,7 @@ public class Client extends WebSocketClient {
 	public static byte currentBaseSize;
 	public static byte currentNumberOfPawns;
 	public static Properties clientSettings;
+	public static gr.eap.RLGameEcoClient.player.Participant.Role joinRole;
 	public Client(URI uri){
 		super(uri);
 	}
