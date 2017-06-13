@@ -38,7 +38,7 @@ public class MessageResponse extends Response {
 		String reply = "";
 		byte boardSize = 0, baseSize = 0, numberOfPawns = 0;
 		UUID joinGameUid = null;
-		Role joinRole = null;
+		Role joinRole = Client.joinRole;
 		if (sender != null && sender.isHuman() && ((Member)sender).getAvatar().equals(Client.me)){
 			
 			if (matchCreateGame.matches()){
@@ -47,6 +47,7 @@ public class MessageResponse extends Response {
 					baseSize = Byte.parseByte(matchCreateGame.group(3));
 					numberOfPawns = Byte.parseByte(matchCreateGame.group(4));
 					reply = "Creating the game. Hope you join me!";
+					joinRole = null;
 				} catch (NumberFormatException e) {
 					reply = "I couldn't quite get the numbers, sorry :(";
 				}
@@ -76,7 +77,7 @@ public class MessageResponse extends Response {
 
 		}
 		
-		Client.joinRole = joinRole;
+		if (joinRole != Client.joinRole) Client.joinRole = joinRole;
 		
 		if (reply != ""){
 			MessageCommand replyCommand = new MessageCommand();
@@ -122,6 +123,7 @@ public class MessageResponse extends Response {
 			Client.currentNumberOfPawns = numberOfPawns;
 			
 			if (joinGameUid != null) {
+				Client.lastState = null;
 				JoinGameCommand joinCommand = new JoinGameCommand();
 				joinCommand.setGameUid(joinGameUid);
 				joinCommand.setRole(joinRole);
