@@ -38,6 +38,7 @@ public class MessageResponse extends Response {
 		String reply = "";
 		byte boardSize = 0, baseSize = 0, numberOfPawns = 0;
 		UUID joinGameUid = null;
+		Role joinRole = null;
 		if (sender != null && sender.isHuman() && ((Member)sender).getAvatar().equals(Client.me)){
 			
 			if (matchCreateGame.matches()){
@@ -55,13 +56,15 @@ public class MessageResponse extends Response {
 //				reply = "Not creating a game for now";
 //			}
 			else{
-				String regexJoinGame = "join UID:(.+)\\sboardsize:(\\d+)\\sbasesize:(\\d+)\\spawns:(\\d+)";
+				String regexJoinGame = "(join|spectate) UID:(.+)\\sboardsize:(\\d+)\\sbasesize:(\\d+)\\spawns:(\\d+)";
 				Matcher matchJoinGame = Pattern.compile(regexJoinGame,Pattern.CASE_INSENSITIVE).matcher(currentMessage);
 				if (matchJoinGame.matches()){
-					joinGameUid = UUID.fromString(matchJoinGame.group(1));
-					boardSize = Byte.parseByte(matchJoinGame.group(2));
-					baseSize = Byte.parseByte(matchJoinGame.group(3));
-					numberOfPawns = Byte.parseByte(matchJoinGame.group(4));
+					if (matchJoinGame.group(2) == "join") joinRole = Role.BLACKPLAYER; else joinRole = Role.SPECTATOR;
+					
+					joinGameUid = UUID.fromString(matchJoinGame.group(2));
+					boardSize = Byte.parseByte(matchJoinGame.group(3));
+					baseSize = Byte.parseByte(matchJoinGame.group(4));
+					numberOfPawns = Byte.parseByte(matchJoinGame.group(5));
 					
 					reply = "Joining game...";
 				}
@@ -72,6 +75,8 @@ public class MessageResponse extends Response {
 			}
 
 		}
+		
+		Client.joinRole = joinRole;
 		
 		if (reply != ""){
 			MessageCommand replyCommand = new MessageCommand();
@@ -84,16 +89,16 @@ public class MessageResponse extends Response {
 		
 		if (boardSize != 0 && baseSize != 0 && numberOfPawns != 0){
 			int ident, opponent, plies;
-			if (joinGameUid != null) {
-				ident = Settings.BLACK_PLAYER;
-				opponent = Settings.WHITE_PLAYER;
-				plies = Settings.PLAYER_B_PLIES;
-			}
-			else
-			{
+			if (joinGameUid == null || joinRole == Role.SPECTATOR) {
 				ident = Settings.WHITE_PLAYER;
 				opponent = Settings.BLACK_PLAYER;
 				plies = Settings.PLAYER_W_PLIES;
+			}
+			else
+			{
+				ident = Settings.BLACK_PLAYER;
+				opponent = Settings.WHITE_PLAYER;
+				plies = Settings.PLAYER_B_PLIES;
 			}
 			
 			String playerType = Client.clientSettings.getProperty("playerType");
@@ -119,7 +124,7 @@ public class MessageResponse extends Response {
 			if (joinGameUid != null) {
 				JoinGameCommand joinCommand = new JoinGameCommand();
 				joinCommand.setGameUid(joinGameUid);
-				joinCommand.setRole(Role.BLACKPLAYER);
+				joinCommand.setRole(joinRole);
 				joinCommand.setId(0);
 				joinCommand.setSocket(getSocket());
 				joinCommand.setUserId(getUserId());
