@@ -60,7 +60,7 @@ public class MessageResponse extends Response {
 				String regexJoinGame = "(join|spectate) UID:(.+)\\sboardsize:(\\d+)\\sbasesize:(\\d+)\\spawns:(\\d+)";
 				Matcher matchJoinGame = Pattern.compile(regexJoinGame,Pattern.CASE_INSENSITIVE).matcher(currentMessage);
 				if (matchJoinGame.matches()){
-					if (matchJoinGame.group(2) == "join") joinRole = Role.BLACKPLAYER; else joinRole = Role.SPECTATOR;
+					if (matchJoinGame.group(1).equals("join")) joinRole = Role.BLACKPLAYER; else joinRole = Role.SPECTATOR;
 					
 					joinGameUid = UUID.fromString(matchJoinGame.group(2));
 					boardSize = Byte.parseByte(matchJoinGame.group(3));
