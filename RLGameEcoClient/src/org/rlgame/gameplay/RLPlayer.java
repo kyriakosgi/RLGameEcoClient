@@ -54,8 +54,8 @@ public class RLPlayer implements IPlayer{
 				Settings.NEURAL_OUTPUT_SIZE, 
 				(this.turn == Settings.WHITE_PLAYER ? Settings.whiteGamma : Settings.blackGamma),
 				(this.turn == Settings.WHITE_PLAYER ? Settings.whiteLamda : Settings.blackLamda),
-				(this.turn == Settings.WHITE_PLAYER ? Settings.whiteVWeightsName : Settings.blackVWeightsName),
-				(this.turn == Settings.WHITE_PLAYER ? Settings.whiteWWeightsName : Settings.blackWWeightsName)
+				(this.turn == Settings.WHITE_PLAYER ? Settings.whiteVWeightsName : Settings.blackVWeightsName) + "_" + Byte.toString(boardSize) + "_" + Byte.toString(baseSize) + "_" + Byte.toString(numberOfPawns),
+				(this.turn == Settings.WHITE_PLAYER ? Settings.whiteWWeightsName : Settings.blackWWeightsName) + "_" + Byte.toString(boardSize) + "_" + Byte.toString(baseSize) + "_" + Byte.toString(numberOfPawns)
 				);
 	}
 
