@@ -102,6 +102,8 @@ public class Client extends WebSocketClient {
 
 	@Override
 	public void onOpen( ServerHandshake handshake ) {
+		//Replace the following code to change what your avatar does upon connection
+		//Avatar logs in after successful connection
 		LoginCommand lc = new LoginCommand();
 		lc.setSocket(getConnection());
 		lc.setUserName(clientSettings.getProperty("userName"));

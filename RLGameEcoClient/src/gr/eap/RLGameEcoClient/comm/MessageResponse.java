@@ -31,6 +31,9 @@ public class MessageResponse extends Response {
 
 	@Override
 	public void process() {
+		//Replace the following code to determine how your avatar manages incoming messages
+
+		//Avatar tries to understand if its creator asked it to create a game
 		Player sender = getMessage().getSender();
 		String currentMessage = getMessage().getText();
 		String regexCreateGame = "(?i)((?!not).)*create.*game.*board.*size.*?(\\d+).*base.*size.*?(\\d+).*?(\\d+).*pawns.*";
@@ -53,10 +56,7 @@ public class MessageResponse extends Response {
 				}
 				
 			}
-//			else if (matchCreateGame != null && matchCreateGame.toMatchResult().group(1).groupCount()>1 && matchCreateGame.group(1) != null){ // caught the word "not"
-//				reply = "Not creating a game for now";
-//			}
-			else{
+			else{ //Avatar checks if the client tells it to join a game
 				String regexJoinGame = "(join|spectate) UID:(.+)\\sboardsize:(\\d+)\\sbasesize:(\\d+)\\spawns:(\\d+)";
 				Matcher matchJoinGame = Pattern.compile(regexJoinGame,Pattern.CASE_INSENSITIVE).matcher(currentMessage);
 				if (matchJoinGame.matches()){
@@ -104,6 +104,7 @@ public class MessageResponse extends Response {
 			
 			String playerType = Client.clientSettings.getProperty("playerType");
 			switch (playerType) {
+			//Create your player class with your algorithm, by implementing the IPlayer interface
 			case "RANDOM_PLAYER":
 				Client.machine = new RandomPlayer(ident);
 				break;

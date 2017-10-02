@@ -25,6 +25,9 @@ public class GamesListResponse extends Response {
 
 	@Override
 	public void process() {
+		//Replace the following code to determine how your avatar to changes in available games
+		
+		//Avatar confirms game start when it finds a game in which it participates
 		GamesRegister.getInstance().setGamesList(getGamesList());
 		Game game = GamesRegister.getInstance().searchGameByPlayer(Client.me);
 		if (game != null){
